@@ -3,16 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ValueConverters="clr-namespace:Tischfussball_TurnierManager.ValueConverters"
         xmlns:program="clr-namespace:Tischfussball_TurnierManager"
+        xmlns:p="clr-namespace:Tischfussball_TurnierManager.Properties"
+        xmlns:data="clr-namespace:Tischfussball_TurnierManager.Data"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:mydg="clr-namespace:MyDataGrid;assembly=MyDataGrid"
+        lex:LocalizeDictionary.DesignCulture="en"
+        lex:ResxLocalizationProvider.DefaultAssembly="Tischfussball_TurnierManager"
+        lex:ResxLocalizationProvider.DefaultDictionary="Resources"
         x:Class="Tischfussball_TurnierManager.MainWindow"
-        Title="MainWindow" Height="463" Width="566" Closing="Window_Closing" MinWidth="240" MinHeight="310">
+        Title="{lex:Loc ProgramTitle}" Height="463" Width="566" Closing="Window_Closing" MinWidth="240" MinHeight="310">
     <Window.Resources>
+        <ValueConverters:ValueConverterGroup x:Key="EqualsToBoldConverter">
+            <ValueConverters:EqualsConverter />
+            <ValueConverters:BoolToObjectConverter TrueObject="{x:Static FontWeights.Bold}" FalseObject="{x:Static FontWeights.Normal}" />
+        </ValueConverters:ValueConverterGroup>
         <ValueConverters:StringConverter x:Key="StringConverter" />
         <ValueConverters:ValueConverterGroup x:Key="NullToBoolConverter">
-            <ValueConverters:EqualsNullConverter />
+            <ValueConverters:EqualsConverter Comp="{x:Null}" />
             <ValueConverters:BooleanInverterConverter />
         </ValueConverters:ValueConverterGroup>
         <ValueConverters:ValueConverterGroup x:Key="NullToVisibilityConverter">
-            <ValueConverters:EqualsNullConverter />
+            <ValueConverters:EqualsConverter Comp="{x:Null}" />
             <ValueConverters:BooleanInverterConverter />
             <BooleanToVisibilityConverter />
         </ValueConverters:ValueConverterGroup>
@@ -23,51 +34,73 @@
         <Style  TargetType="{x:Type ListBoxItem}">
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                    <Setter Property="Background" Value="#19f39611"></Setter>
+                    <Setter Property="Background" Value="#19f39611" />
                 </Trigger>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="#19000000"></Setter>
+                    <Setter Property="Background" Value="#19000000" />
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
     <Grid>
         <Menu HorizontalAlignment="Stretch" Height="20" Margin="0,0,0,0" VerticalAlignment="Top">
-            <MenuItem Header="Datei">
-                <MenuItem Header="Erzeuge ein neues Turnier" Click="MI_CreateTournament_Click" />
-                <MenuItem Header="Turnier abspeichern" Click="MI_Save_Click" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}" />
-                <MenuItem Header="Turnier abspeichern unter ..." Click="MI_SaveAs_Click" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}" />
-                <MenuItem Header="Turnier laden" Click="MI_Load_Click" />
-                <MenuItem Header="Exportiere Turnier in xls" Click="MI_Export_XLS" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}" />
+            <MenuItem Header="{lex:Loc MIFile}">
+                <MenuItem Header="{lex:Loc MICreateTournament}" Click="MI_CreateTournament_Click" />
+                <MenuItem Header="{lex:Loc MISave}" Click="MI_Save_Click" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}" />
+                <MenuItem Header="{lex:Loc MISaveAs}" Click="MI_SaveAs_Click" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}" />
+                <MenuItem Header="{lex:Loc MILoad}" Click="MI_Load_Click" />
+                <MenuItem Header="{lex:Loc MIExportInXLS}" Click="MI_Export_XLS" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}" />
             </MenuItem>
-            <MenuItem Header="Turnier" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}">
-                <MenuItem Header="Neue Runde auslosen" Click="MINewRound_Click" />
-                <MenuItem Name="MIRefreshDraw" Click="MIReCalculateRound_Click" Header="{Binding ActiveRound, ConverterParameter=Runde % erneut auslosen, Converter={StaticResource StringConverter}}" IsEnabled="{Binding ActiveRound, ConverterParameter=0, Converter={StaticResource GTToBoolConverter}}" />
+            <MenuItem Header="{lex:Loc MITournament}" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}">
+                <MenuItem Header="{lex:Loc MINewRound}" Click="MINewRound_Click" />
+                <MenuItem Name="MIRefreshDraw" Click="MIReCalculateRound_Click" IsEnabled="{Binding ActiveRound, ConverterParameter=0, Converter={StaticResource GTToBoolConverter}}">
+                    <MenuItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{lex:Loc RefreshDrawPreRound}" Padding="0" />
+                            <Label Content="{Binding ActiveRound}" Padding="0" />
+                            <Label Content="{lex:Loc RefreshDrawPostRound}" Padding="0" />
+                        </StackPanel>
+                    </MenuItem.Header>
+                </MenuItem>
             </MenuItem>
-            <MenuItem Name="MIRounds" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}" Header="{Binding ActiveRoundDisplay, ConverterParameter=Runde (%), Converter={StaticResource StringConverter}}">
+            <MenuItem Name="MIRounds" IsEnabled="{Binding ActiveTournament, Converter={StaticResource NullToBoolConverter}}">
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{lex:Loc MIRound}" Padding="0" />
+                        <Label Content=" (" Padding="0" />
+                        <Label Content="{Binding ActiveRoundDisplay}" Padding="0" />
+                        <Label Content=")" Padding="0" />
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Header="{lex:Loc MISettings}">
+                <MenuItem Header="{lex:Loc MILanguage}">
+                    <MenuItem Header="{lex:Loc MIGerman}" Click="MILanguage_Click" Tag="{x:Static data:Language.German}" FontWeight="{Binding ActiveLanguage, ConverterParameter={x:Static data:Language.German}, Converter={StaticResource EqualsToBoldConverter}}" />
+                    <MenuItem Header="{lex:Loc MIEnglish}" Click="MILanguage_Click" Tag="{x:Static data:Language.English}" FontWeight="{Binding ActiveLanguage, ConverterParameter={x:Static data:Language.English}, Converter={StaticResource EqualsToBoldConverter}}" />
+                </MenuItem>
             </MenuItem>
         </Menu>
         <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,20,0,0" Visibility="{Binding ActiveTournament, Converter={StaticResource NullToVisibilityConverter}}" SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Header="Turniereinstellungen">
+            <TabItem Header="{lex:Loc TITournamentSettings}">
                 <StackPanel>
                     <DockPanel Margin="0,10,0,5">
-                        <Label Margin="10,0,5,0">Name:</Label>
+                        <Label Margin="10,0,5,0" Content="{lex:Loc LabName}" />
                         <TextBox Margin="5,0,10,0" Text="{Binding ActiveTournament.Name}" />
                     </DockPanel>
                     <DockPanel Margin="0,10,0,5">
-                        <Label Margin="10,0,5,0">Datum:</Label>
+                        <Label Margin="10,0,5,0" Content="{lex:Loc LabDate}" />
                         <DatePicker Margin="5,0,10,0" SelectedDate="{Binding ActiveTournament.Date}" />
                     </DockPanel>
                     <DockPanel Margin="0,10,0,5">
-                        <Label Margin="10,0,5,0">Beschreibung:</Label>
+                        <Label Margin="10,0,5,0" Content="{lex:Loc LabDescription}" />
                         <TextBox Margin="10,0,5,0" Height="100" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MinHeight="100" Text="{Binding ActiveTournament.Description}" />
                     </DockPanel>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Teilnehmerliste">
-                <program:MyDataGrid ItemsSource="{Binding ActiveTournament.AttendanceList}" AutoGenerateColumns="True" CanUserDeleteRows="False" CanUserAddRows="True" />
+            <TabItem Header="{lex:Loc TIAttendenceList}">
+                <mydg:MyDataGrid SingleType="{x:Static data:ViewType.AttendanceView}" ItemsSource="{Binding ActiveTournament.AttendanceList}" AutoGenerateColumns="True" CanUserDeleteRows="False" CanUserAddRows="True" />
             </TabItem>
-            <TabItem Header="Paarungen" Name="TIFixtures">
+            <TabItem Header="{lex:Loc TIDraw}" Name="TIFixtures">
                 <ListBox ItemsSource="{Binding}" HorizontalContentAlignment="Stretch" AlternationCount="2">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -91,17 +124,8 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </TabItem>
-            <TabItem Header="Rangliste" Name="TIRanking">
-                <DataGrid Name="dgRanking" AutoGenerateColumns="False" ItemsSource="{Binding ActiveTournament.AttendanceList}" IsReadOnly="True" CanUserSortColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Rank}" ClipboardContentBinding="{x:Null}" Header="Rang" SortMemberPath="Rank" />
-                        <DataGridTextColumn Binding="{Binding DisplayName}" ClipboardContentBinding="{x:Null}" Header="Spieler" />
-                        <DataGridTextColumn Binding="{Binding PointsPerGame}" ClipboardContentBinding="{x:Null}" Header="Punkte pro Spiel" SortMemberPath="PointsPerGame" />
-                        <DataGridTextColumn Binding="{Binding Points}" ClipboardContentBinding="{x:Null}" Header="Punkte" SortMemberPath="Points" />
-                        <DataGridTextColumn Binding="{Binding GoalDifference}" ClipboardContentBinding="{x:Null}" Header="Tordifferenz" SortMemberPath="GoalDifference" />
-                        <DataGridTextColumn Binding="{Binding GamesPlayed}" ClipboardContentBinding="{x:Null}" Header="Spiele gespielt" SortMemberPath="GamesPlayed" />
-                    </DataGrid.Columns>
-                </DataGrid>
+            <TabItem Header="{lex:Loc TIRanking}" Name="TIRanking">
+                <mydg:MyDataGrid SingleType="{x:Static data:ViewType.RankingView}" Name="dgRanking" AutoGenerateColumns="True" ItemsSource="{Binding ActiveTournament.AttendanceList}" IsReadOnly="True" CanUserSortColumns="False" />
             </TabItem>
         </TabControl>
     </Grid>

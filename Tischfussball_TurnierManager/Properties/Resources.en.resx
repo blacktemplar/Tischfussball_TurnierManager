@@ -150,9 +150,6 @@
   <data name="ColStartNumber" xml:space="preserve">
     <value>Startnumber</value>
   </data>
-  <data name="Goals" xml:space="preserve">
-    <value>Goals</value>
-  </data>
   <data name="LabDate" xml:space="preserve">
     <value>Date:</value>
   </data>
@@ -233,5 +230,8 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="Goals" xml:space="preserve">
+    <value>Goals</value>
   </data>
 </root>

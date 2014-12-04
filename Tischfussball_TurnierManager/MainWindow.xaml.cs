@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Tischfussball_TurnierManager.Data;
+using WPFLocalizeExtension.Engine;
 
 namespace Tischfussball_TurnierManager
 {
@@ -32,9 +34,12 @@ namespace Tischfussball_TurnierManager
         {
             maxRound = 0;
             InitializeComponent();
+            LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
+            LocalizeDictionary.Instance.Culture = System.Threading.Thread.CurrentThread.CurrentUICulture;
             data = new DataCollection();
+            data.ActiveLanguage = Data.Language.English;
             man = new Manager(this, data);
-            man.tryLoadTemporaryFile();
+            data = man.tryLoadTemporaryFile();
             if (man.TournamentChangedSinceLastSave())
             {
                 MessageBoxResult res = MessageBox.Show("Das zuletzt geöffnete Turnier wurde nicht richtig abgespeichert, wollen Sie die letzten Änderungen wiederherstellen?", "Änderungen wiederherstellen?", MessageBoxButton.YesNo);
@@ -157,7 +162,6 @@ namespace Tischfussball_TurnierManager
             {
                 // Save document
                 data.ActiveTournamentSavePath = dlg.FileName;
-                data.ActiveTournament.LastSavePath = dlg.FileName;
                 if (!man.Save())
                 {
                     MessageBox.Show("Das Turnier konnte am angegebenen Pfad nicht abgespeichert werden!");
@@ -261,6 +265,26 @@ namespace Tischfussball_TurnierManager
             if (MessageBoxResult.Yes != MessageBox.Show("Sind Sie sich sicher, dass Sie die Auslung und die Ergebnisse der " + data.ActiveRound + ". Runde überschreiben wollen?", "Sind sie sich sicher?", MessageBoxButton.YesNo))
                 return;
             man.RecalculatePlayerstats(data.ActiveRound - 1);
+        }
+
+        private void MILanguage_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Control && (sender as Control).Tag is Language)
+            {
+                Language newL = (Language)(sender as Control).Tag;
+                data.ActiveLanguage = newL;
+            }
+        }
+
+        public void RefreshBindings()
+        {
+            this.DataContext = null;
+            this.DataContext = data;
+            SetRound(null);
+            if (this.data.ActiveTournament != null && this.data.ActiveRound > 0 && this.data.ActiveTournament.Rounds.Count >= this.data.ActiveRound)
+            {
+                SetRound(data.ActiveTournament.Rounds[data.ActiveRound - 1]);
+            }
         }
     }
 }

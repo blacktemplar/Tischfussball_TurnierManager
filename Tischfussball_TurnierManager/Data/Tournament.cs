@@ -18,11 +18,8 @@ namespace Tischfussball_TurnierManager.Data
 
         public List<Round> Rounds { get; set; }
 
-        public string LastSavePath { get; set; }
-
         #region Name
 
-        [DisplayName("Name")]
         public string Name
         {
             get { return name; }
@@ -42,7 +39,6 @@ namespace Tischfussball_TurnierManager.Data
 
         #region Description
 
-        [DisplayName("Description")]
         public string Description
         {
             get { return description; }
@@ -62,7 +58,6 @@ namespace Tischfussball_TurnierManager.Data
 
         #region Date
 
-        [DisplayName("Date")]
         public DateTime Date
         {
             get { return date; }
@@ -86,7 +81,7 @@ namespace Tischfussball_TurnierManager.Data
             AttendanceList = new ObservableCollection<Player>();
             AttendanceList.CollectionChanged += AttendanceList_CollectionChanged;
             maxStartNumber = 0;
-            Name = "Neues Turnier";
+            Name = Manager.GetUIString("NewTournamentName");
             Date = DateTime.Now;
         }
 

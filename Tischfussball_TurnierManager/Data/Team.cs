@@ -50,7 +50,7 @@ namespace Tischfussball_TurnierManager.Data
         {
             get
             {
-                return Player1.DisplayName + " und " + Player2.DisplayName;
+                return Player1.DisplayName + Manager.GetUIString("TeamDisplayNameConnector") + Player2.DisplayName;
             }
         }
 

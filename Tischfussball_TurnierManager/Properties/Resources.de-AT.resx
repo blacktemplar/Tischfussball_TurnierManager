@@ -118,120 +118,120 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ColBeginningStrength" xml:space="preserve">
-    <value>Beginning Strength</value>
+    <value>Anfangsstärke</value>
   </data>
   <data name="ColFirstName" xml:space="preserve">
-    <value>First Name</value>
+    <value>Vorname</value>
   </data>
   <data name="ColGamesPlayed" xml:space="preserve">
-    <value>Games played</value>
+    <value>Anzahl gespielt</value>
   </data>
   <data name="ColGoaldifference" xml:space="preserve">
-    <value>Goal difference</value>
+    <value>Tordifferenz</value>
   </data>
   <data name="ColIsActive" xml:space="preserve">
-    <value>Is Active</value>
+    <value>Wird ausgelost</value>
   </data>
   <data name="ColLastName" xml:space="preserve">
-    <value>Last Name</value>
+    <value>Nachname</value>
   </data>
   <data name="ColPlayer" xml:space="preserve">
-    <value>Player</value>
+    <value>Spieler</value>
   </data>
   <data name="ColPoints" xml:space="preserve">
-    <value>Points</value>
+    <value>Punkte</value>
   </data>
   <data name="ColPointsPerGame" xml:space="preserve">
-    <value>Points per game</value>
+    <value>Punkte pro Spiel</value>
   </data>
   <data name="ColRank" xml:space="preserve">
-    <value>Rank</value>
+    <value>Rang</value>
   </data>
   <data name="ColStartNumber" xml:space="preserve">
-    <value>Startnumber</value>
-  </data>
-  <data name="Goals" xml:space="preserve">
-    <value>Goals</value>
+    <value>Startnummer</value>
   </data>
   <data name="LabDate" xml:space="preserve">
-    <value>Date:</value>
+    <value>Datum:</value>
   </data>
   <data name="LabDescription" xml:space="preserve">
-    <value>Description:</value>
+    <value>Beschreibung:</value>
   </data>
   <data name="LabName" xml:space="preserve">
     <value>Name:</value>
   </data>
   <data name="MICreateTournament" xml:space="preserve">
-    <value>Create a new Tournament</value>
+    <value>Erstelle ein neues Turnier</value>
   </data>
   <data name="MIEnglish" xml:space="preserve">
-    <value>English</value>
+    <value>Englisch</value>
   </data>
   <data name="MIExportInXLS" xml:space="preserve">
-    <value>Export Tournament in XLS</value>
+    <value>Exportiere Turnier in XLS</value>
   </data>
   <data name="MIFile" xml:space="preserve">
-    <value>File</value>
+    <value>Datei</value>
   </data>
   <data name="MIGerman" xml:space="preserve">
-    <value>German</value>
+    <value>Deutsch</value>
   </data>
   <data name="MILanguage" xml:space="preserve">
-    <value>Language</value>
+    <value>Sprache</value>
   </data>
   <data name="MILoad" xml:space="preserve">
-    <value>Load Tournament</value>
+    <value>Lade Turnier</value>
   </data>
   <data name="MINewRound" xml:space="preserve">
-    <value>Draw a new round</value>
+    <value>Neue Runde auslosen</value>
   </data>
   <data name="MIRound" xml:space="preserve">
-    <value>Round</value>
+    <value>Runde</value>
   </data>
   <data name="MISave" xml:space="preserve">
-    <value>Save Tournament</value>
+    <value>Speichere Turnier</value>
   </data>
   <data name="MISaveAs" xml:space="preserve">
-    <value>Save  Tournament As...</value>
+    <value>Speichere Turnier unter ...</value>
   </data>
   <data name="MISettings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Einstellungen</value>
   </data>
   <data name="MITournament" xml:space="preserve">
-    <value>Tournament</value>
+    <value>Turnier</value>
   </data>
   <data name="NewTournamentName" xml:space="preserve">
-    <value>New Tournament</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
+    <value>Neues Turnier</value>
   </data>
   <data name="ProgramTitle" xml:space="preserve">
-    <value>Foosball Tournament Manager</value>
+    <value>Tischfußball Turniermanager</value>
   </data>
   <data name="RefreshDrawPostRound" xml:space="preserve">
-    <value />
+    <value> erneut auslosen</value>
   </data>
   <data name="RefreshDrawPreRound" xml:space="preserve">
-    <value>Redraw round </value>
+    <value>Runde </value>
   </data>
   <data name="TeamDisplayNameConnector" xml:space="preserve">
-    <value> and </value>
+    <value> und </value>
   </data>
   <data name="TIAttendenceList" xml:space="preserve">
-    <value>Attendance List</value>
+    <value>Teilnehmerliste</value>
   </data>
   <data name="TIDraw" xml:space="preserve">
-    <value>Draw</value>
+    <value>Auslosung</value>
   </data>
   <data name="TIRanking" xml:space="preserve">
-    <value>Ranking</value>
+    <value>Rangliste</value>
   </data>
   <data name="TITournamentSettings" xml:space="preserve">
-    <value>Tournament Settings</value>
+    <value>Turnier Einstellungen</value>
+  </data>
+  <data name="Goals" xml:space="preserve">
+    <value>Tore</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Ja</value>
   </data>
 </root>

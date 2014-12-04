@@ -5,10 +5,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Tischfussball_TurnierManager.Data;
+using WPFLocalizeExtension.Engine;
+using WPFLocalizeExtension.Extensions;
 
 namespace Tischfussball_TurnierManager
 {
@@ -54,6 +57,25 @@ namespace Tischfussball_TurnierManager
                 {
                     mainWindow.SetRound(null);
                 }
+            }
+            if (e.PropertyName == "ActiveLanguage")
+            {
+                setCultureInfo();
+                mainWindow.RefreshBindings();
+            }
+        }
+
+        private void setCultureInfo()
+        {
+            switch (data.ActiveLanguage)
+            {
+                case Language.German:
+                    LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("de-AT");
+                    break;
+
+                default:
+                    LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("en");
+                    break;
             }
         }
 
@@ -334,27 +356,32 @@ namespace Tischfussball_TurnierManager
                 {
                     tournament = (Tournament)ser.Deserialize(stream);
                 }
-                setTournament(tournament);
-                ReconnectPlayers();
-                SetFixtureListeners();
-                calculateDisplayNames();
-                CalculatePlayerStats();
-                mainWindow.ResetMaxRound();
-                mainWindow.SetMaxRound(data.ActiveTournament.Rounds.Count);
-                if (data.ActiveRound == 0)
-                {
-                    mainWindow.SetRound(null);
-                }
-                else
-                {
-                    mainWindow.SetRound(data.ActiveTournament.Rounds[data.ActiveRound - 1]);
-                }
+                loadTournament(tournament);
             }
             catch
             {
                 return false;
             }
             return true;
+        }
+
+        private void loadTournament(Tournament t)
+        {
+            setTournament(t);
+            ReconnectPlayers();
+            SetFixtureListeners();
+            calculateDisplayNames();
+            CalculatePlayerStats();
+            mainWindow.ResetMaxRound();
+            mainWindow.SetMaxRound(data.ActiveTournament.Rounds.Count);
+            if (data.ActiveRound == 0)
+            {
+                mainWindow.SetRound(null);
+            }
+            else
+            {
+                mainWindow.SetRound(data.ActiveTournament.Rounds[data.ActiveRound - 1]);
+            }
         }
 
         private void SetFixtureListeners()
@@ -393,21 +420,21 @@ namespace Tischfussball_TurnierManager
         public void exportXLS(string filePath, bool roundsTogether)
         {
             Workbook workbook = new Workbook();
-            Worksheet worksheet = new Worksheet("Turnierdaten");
-            worksheet.Cells[0, 0] = new Cell("Name");
-            worksheet.Cells[1, 0] = new Cell("Datum");
-            worksheet.Cells[2, 0] = new Cell("Beschreibung");
+            Worksheet worksheet = new Worksheet(GetUIString("TITournamentSettings"));
+            worksheet.Cells[0, 0] = new Cell(GetUIString("LabName"));
+            worksheet.Cells[1, 0] = new Cell(GetUIString("LabDate"));
+            worksheet.Cells[2, 0] = new Cell(GetUIString("LabDescription"));
             worksheet.Cells[0, 1] = new Cell(data.ActiveTournament.Name);
             worksheet.Cells[1, 1] = new Cell(data.ActiveTournament.Date, CellFormat.Date);
             worksheet.Cells[2, 1] = new Cell(data.ActiveTournament.Description);
             workbook.Worksheets.Add(worksheet);
 
-            worksheet = new Worksheet("Teilnehmerliste");
-            worksheet.Cells[0, 0] = new Cell("Startnummer");
-            worksheet.Cells[0, 1] = new Cell("Vorname");
-            worksheet.Cells[0, 2] = new Cell("Nachname");
-            worksheet.Cells[0, 3] = new Cell("Anfangsstärke");
-            worksheet.Cells[0, 4] = new Cell("Wird ausgelost");
+            worksheet = new Worksheet(GetUIString("TIAttendenceList"));
+            worksheet.Cells[0, 0] = new Cell(GetUIString("ColStartNumber"));
+            worksheet.Cells[0, 1] = new Cell(GetUIString("ColFirstName"));
+            worksheet.Cells[0, 2] = new Cell(GetUIString("ColLastName"));
+            worksheet.Cells[0, 3] = new Cell(GetUIString("ColBeginningStrength"));
+            worksheet.Cells[0, 4] = new Cell(GetUIString("ColIsActive"));
 
             int row = 1;
             foreach (Player p in data.ActiveTournament.AttendanceList)
@@ -416,7 +443,7 @@ namespace Tischfussball_TurnierManager
                 worksheet.Cells[row, 1] = new Cell(p.FirstName);
                 worksheet.Cells[row, 2] = new Cell(p.LastName);
                 worksheet.Cells[row, 3] = new Cell(p.BeginningStrength);
-                worksheet.Cells[row, 4] = new Cell(p.IsActive ? "Ja" : "Nein");
+                worksheet.Cells[row, 4] = new Cell(GetUIString(p.IsActive ? "Yes" : "No"));
                 row++;
             }
 
@@ -424,7 +451,7 @@ namespace Tischfussball_TurnierManager
 
             row = 2;
 
-            worksheet = createRoundWorksheetWithHeaders("Auslosungen", 1);
+            worksheet = createRoundWorksheetWithHeaders(GetUIString("TIDraw"), 1);
 
             int roundNumber = 1;
 
@@ -433,13 +460,13 @@ namespace Tischfussball_TurnierManager
                 int colOffset = 0;
                 if (!roundsTogether)
                 {
-                    worksheet = createRoundWorksheetWithHeaders("Runde " + roundNumber.ToString());
+                    worksheet = createRoundWorksheetWithHeaders(GetUIString("MIRound") + " " + roundNumber.ToString());
                     row = 2;
                 }
                 else
                 {
                     colOffset = 1;
-                    worksheet.Cells[row, 0] = new Cell("Runde " + roundNumber.ToString());
+                    worksheet.Cells[row, 0] = new Cell(GetUIString("MIRound") + " " + roundNumber.ToString());
                 }
 
                 foreach (Fixture f in r)
@@ -466,13 +493,13 @@ namespace Tischfussball_TurnierManager
                 workbook.Worksheets.Add(worksheet);
             }
 
-            worksheet = new Worksheet("Rangliste");
-            worksheet.Cells[0, 0] = new Cell("Rang");
-            worksheet.Cells[0, 1] = new Cell("Spieler");
-            worksheet.Cells[0, 2] = new Cell("Punkte pro Spiel");
-            worksheet.Cells[0, 3] = new Cell("Punkte");
-            worksheet.Cells[0, 4] = new Cell("Tordifferenz");
-            worksheet.Cells[0, 5] = new Cell("Spiele gespielt");
+            worksheet = new Worksheet(GetUIString("TIRanking"));
+            worksheet.Cells[0, 0] = new Cell(GetUIString("ColRank"));
+            worksheet.Cells[0, 1] = new Cell(GetUIString("ColPlayer"));
+            worksheet.Cells[0, 2] = new Cell(GetUIString("ColPointsPerGame"));
+            worksheet.Cells[0, 3] = new Cell(GetUIString("ColPoints"));
+            worksheet.Cells[0, 4] = new Cell(GetUIString("ColGoaldifference"));
+            worksheet.Cells[0, 5] = new Cell(GetUIString("ColGamesPlayed"));
 
             row = 1;
             foreach (Player p in
@@ -513,8 +540,8 @@ namespace Tischfussball_TurnierManager
         {
             Worksheet res = new Worksheet(name);
             res.Cells[0, beginColumn + 0] = new Cell("Team1");
-            res.Cells[0, beginColumn + 1] = new Cell("Tore Team1");
-            res.Cells[0, beginColumn + 3] = new Cell("Tore Team2");
+            res.Cells[0, beginColumn + 1] = new Cell(GetUIString("Goals") + " Team1");
+            res.Cells[0, beginColumn + 3] = new Cell(GetUIString("Goals") + " Team2");
             res.Cells[0, beginColumn + 4] = new Cell("Team2");
             res.Cells.ColumnWidth[(ushort)(beginColumn + 1)] = 1000;
             res.Cells.ColumnWidth[(ushort)(beginColumn + 2)] = 500;
@@ -522,23 +549,34 @@ namespace Tischfussball_TurnierManager
             return res;
         }
 
-        public void tryLoadTemporaryFile()
+        public DataCollection tryLoadTemporaryFile()
         {
             try
             {
-                Load(tempFile);
-                data.ActiveTournamentSavePath = data.ActiveTournament.LastSavePath;
+                XmlSerializer ser = new XmlSerializer(typeof(DataCollection));
+                using (FileStream stream = new FileStream(tempFile, FileMode.Open))
+                {
+                    data = (DataCollection)ser.Deserialize(stream);
+                }
+                data.PropertyChanged += Data_PropertyChanged;
+                loadTournament(data.ActiveTournament);
+                setCultureInfo();
             }
             catch
             {
             }
+            return this.data;
         }
 
         public void trySaveTemporaryFile()
         {
             try
             {
-                Save(tempFile);
+                XmlSerializer ser = new XmlSerializer(typeof(DataCollection));
+                using (TextWriter writer = new StreamWriter(tempFile))
+                {
+                    ser.Serialize(writer, data);
+                }
             }
             catch
             {
@@ -571,7 +609,9 @@ namespace Tischfussball_TurnierManager
                 }
             }
             catch
-            { return false; }
+            {
+                return false;
+            }
         }
 
         public void ForgetChanges()
@@ -592,5 +632,27 @@ namespace Tischfussball_TurnierManager
             CalculatePlayerStats();
             NewRound(ind);
         }
+
+        public static string GetUIString(string key)
+        {
+            string uiString;
+            LocTextExtension locExtension = new LocTextExtension(AssemblyName + ":Resources:" + key);
+            locExtension.ResolveLocalizedValue(out uiString);
+            return uiString;
+        }
+
+        private static string AssemblyName
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(assemblyName))
+                {
+                    assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+                }
+                return assemblyName;
+            }
+        }
+
+        private static string assemblyName;
     }
 }

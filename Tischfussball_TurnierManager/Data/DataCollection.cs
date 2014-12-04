@@ -42,6 +42,25 @@ namespace Tischfussball_TurnierManager.Data
 
         #endregion ActiveRound
 
+        #region ActiveLanguage
+
+        public Language ActiveLanguage
+        {
+            get { return activeLanguage; }
+            set
+            {
+                if (value != activeLanguage)
+                {
+                    activeLanguage = value;
+                    OnNotifyPropertyChanged("ActiveLanguage");
+                }
+            }
+        }
+
+        private Language activeLanguage;
+
+        #endregion ActiveLanguage
+
         public string ActiveRoundDisplay { get { if (ActiveTournament == null) return ""; return ActiveRound.ToString() + "/" + ActiveTournament.Rounds.Count.ToString(); } }
 
         public string ActiveTournamentSavePath { get; set; }

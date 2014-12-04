@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyDataGrid;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -16,8 +17,10 @@ namespace Tischfussball_TurnierManager.Data
 
         #region StartNumber
 
-        [DisplayName("Startnummer")]
+        [LocalizedDisplayName("ColStartNumber")]
+        [Viewable(ViewType.AttendanceView)]
         [ReadOnly(true)]
+        [Ordering(0)]
         public int StartNumber
         {
             get { return startNumber; }
@@ -37,7 +40,9 @@ namespace Tischfussball_TurnierManager.Data
 
         #region FirstName
 
-        [DisplayName("Vorname")]
+        [LocalizedDisplayName("ColFirstName")]
+        [MyDataGrid.Editable(ViewType.AttendanceView)]
+        [Ordering(1)]
         public string FirstName
         {
             get { return firstName; }
@@ -58,7 +63,9 @@ namespace Tischfussball_TurnierManager.Data
 
         #region LastName
 
-        [DisplayName("Nachname")]
+        [LocalizedDisplayName("ColLastName")]
+        [MyDataGrid.Editable(ViewType.AttendanceView)]
+        [Ordering(2)]
         public string LastName
         {
             get { return lastName; }
@@ -78,7 +85,9 @@ namespace Tischfussball_TurnierManager.Data
 
         #region BeginningStrength
 
-        [DisplayName("Anfangsstärke")]
+        [LocalizedDisplayName("ColBeginningStrength")]
+        [MyDataGrid.Editable(ViewType.AttendanceView)]
+        [Ordering(3)]
         public double BeginningStrength
         {
             get { return beginningStrength; }
@@ -98,7 +107,9 @@ namespace Tischfussball_TurnierManager.Data
 
         #region IsActive
 
-        [DisplayName("Wird ausgelost")]
+        [LocalizedDisplayName("ColIsActive")]
+        [MyDataGrid.Editable(ViewType.AttendanceView)]
+        [Ordering(4)]
         public bool IsActive
         {
             get { return isActive; }
@@ -118,9 +129,11 @@ namespace Tischfussball_TurnierManager.Data
 
         #region DisplayName
 
-        [DisplayName("Anzeigename")]
         [Browsable(false)]
+        [Viewable(ViewType.RankingView)]
+        [LocalizedDisplayName("ColPlayer")]
         [XmlIgnore]
+        [Ordering(6)]
         public string DisplayName
         {
             get { return displayName; }
@@ -141,7 +154,10 @@ namespace Tischfussball_TurnierManager.Data
         #region GamesPlayed
 
         [XmlIgnore]
+        [Viewable(ViewType.RankingView)]
+        [LocalizedDisplayName("ColGamesPlayed")]
         [Browsable(false)]
+        [Ordering(10)]
         public int GamesPlayed
         {
             get { return gamesPlayed; }
@@ -183,7 +199,10 @@ namespace Tischfussball_TurnierManager.Data
         #region Points
 
         [XmlIgnore]
+        [Viewable(ViewType.RankingView)]
+        [LocalizedDisplayName("ColPoints")]
         [Browsable(false)]
+        [Ordering(8)]
         public int Points
         {
             get { return points; }
@@ -204,7 +223,10 @@ namespace Tischfussball_TurnierManager.Data
         #region GoalDifference
 
         [XmlIgnore]
+        [Viewable(ViewType.RankingView)]
+        [LocalizedDisplayName("ColGoaldifference")]
         [Browsable(false)]
+        [Ordering(9)]
         public int GoalDifference
         {
             get { return goalDifference; }
@@ -225,7 +247,10 @@ namespace Tischfussball_TurnierManager.Data
         #region Rank
 
         [XmlIgnore]
+        [Viewable(ViewType.RankingView)]
+        [LocalizedDisplayName("ColRank")]
         [Browsable(false)]
+        [Ordering(5)]
         public int Rank
         {
             get { return rank; }
@@ -244,6 +269,9 @@ namespace Tischfussball_TurnierManager.Data
         #endregion Rank
 
         [XmlIgnore]
+        [Viewable(ViewType.RankingView)]
+        [LocalizedDisplayName("ColPointsPerGame")]
+        [Ordering(7)]
         [Browsable(false)]
         public double PointsPerGame
         {
