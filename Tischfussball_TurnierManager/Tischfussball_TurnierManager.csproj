@@ -36,7 +36,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExcelLibrary">
-      <HintPath>..\..\..\..\Prgrammiertools\ExcelLibrary\ExcelLibrary.dll</HintPath>
+      <HintPath>..\libraries\ExcelLibrary\ExcelLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="MyDataGrid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\MyDataGrid\MyDataGrid.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -61,7 +65,7 @@
       <HintPath>..\packages\XAMLMarkupExtensions.1.1.6.3\lib\net40\XAMLMarkupExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Wpf.Toolkit">
-      <HintPath>..\..\..\..\Prgrammiertools\ExtendedWPFToolkit\Xceed.Wpf.Toolkit.dll</HintPath>
+      <HintPath>..\libraries\ExtendedWPFToolkit\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -147,12 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\MyLibraries\MyDataGrid\MyDataGrid.csproj">
-      <Project>{fc7be448-3d1e-4910-9def-29de31a41979}</Project>
-      <Name>MyDataGrid</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
