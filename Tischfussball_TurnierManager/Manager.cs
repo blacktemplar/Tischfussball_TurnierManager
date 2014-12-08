@@ -281,9 +281,9 @@ namespace Tischfussball_TurnierManager
             }
         }
 
-        private void calculateDisplayNames() 
+        private void calculateDisplayNames()
         {
-            foreach (Player p in data.ActiveTournament.AttendanceList) 
+            foreach (Player p in data.ActiveTournament.AttendanceList)
             {
                 string displayName = p.FirstName;
                 if (p.LastName == null) 
@@ -291,18 +291,18 @@ namespace Tischfussball_TurnierManager
                     p.LastName = "";
                 }
                 int max = -1;
-                foreach (Player q in data.ActiveTournament.AttendanceList) 
+                foreach (Player q in data.ActiveTournament.AttendanceList)
                 {
                     if (q.LastName == null) 
                     {
                         q.LastName = "";
                     }
-                    if (q != p && q.FirstName == p.FirstName) 
+                    if (q != p && q.FirstName == p.FirstName)
                     {
                         int i;
                         for (i = 0; i < p.LastName.Length; i++) 
                         {
-                            if (q.LastName.Length <= i || q.LastName[i] != p.LastName[i]) 
+                            if (q.LastName.Length <= i || q.LastName[i] != p.LastName[i])
                             {
                                 if (i > max) 
                                 {
@@ -311,16 +311,16 @@ namespace Tischfussball_TurnierManager
                                 i = p.LastName.Length + 1;
                             }
                         }
-                        if (i == p.LastName.Length) 
+                        if (i == p.LastName.Length)
                         {
                             max = p.LastName.Length - 1;
                         }
                     }
                 }
-                if (max > -1) 
+                if (max > -1)
                 {
                     displayName += " " + p.LastName.Substring(0, max + 1);
-                    if (max < p.LastName.Length - 1) 
+                    if (max < p.LastName.Length - 1)
                     {
                         displayName += ".";
                     }
