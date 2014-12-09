@@ -51,7 +51,6 @@ namespace Tischfussball_TurnierManager.Data
                 if (value != firstName)
                 {
                     firstName = value;
-                    int test = 1;
                     OnNotifyPropertyChanged("FirstName");
                 }
             }
@@ -306,10 +305,17 @@ namespace Tischfussball_TurnierManager.Data
 
         public Player()
         {
+            FirstName = "";
+            LastName = "";
             BeginningStrength = 0.5;
-            GamesPlayed = 0;
             IsActive = true;
             StartNumber = -1;
+            DisplayName = "";
+            GamesPlayed = 0;
+            GamesDrawnLotsFor = 0;
+            Points = 0;
+            GoalDifference = 0;
+            Rank = 0;
         }
 
         public Player(string firstName, string lastName)
@@ -317,6 +323,14 @@ namespace Tischfussball_TurnierManager.Data
         {
             FirstName = firstName;
             LastName = lastName;
+            if (FirstName == null)
+            {
+                firstName = "";
+            }
+            if (LastName == "")
+            {
+                lastName = "";
+            }
         }
 
         private void OnNotifyPropertyChanged(string propName)
