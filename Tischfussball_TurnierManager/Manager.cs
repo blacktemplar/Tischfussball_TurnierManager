@@ -286,17 +286,25 @@ namespace Tischfussball_TurnierManager
             foreach (Player p in data.ActiveTournament.AttendanceList)
             {
                 string displayName = p.FirstName;
+                if (p.LastName == null) 
+                {
+                    p.LastName = "";
+                }
                 int max = -1;
                 foreach (Player q in data.ActiveTournament.AttendanceList)
                 {
+                    if (q.LastName == null) 
+                    {
+                        q.LastName = "";
+                    }
                     if (q != p && q.FirstName == p.FirstName)
                     {
                         int i;
-                        for (i = 0; i < p.LastName.Length; i++)
+                        for (i = 0; i < p.LastName.Length; i++) 
                         {
                             if (q.LastName.Length <= i || q.LastName[i] != p.LastName[i])
                             {
-                                if (i > max)
+                                if (i > max) 
                                 {
                                     max = i;
                                 }
