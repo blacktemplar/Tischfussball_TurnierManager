@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Xml.Serialization;
 
 namespace Tischfussball_TurnierManager.Data
@@ -14,9 +15,15 @@ namespace Tischfussball_TurnierManager.Data
     {
         private int maxStartNumber;
 
-        public ObservableCollection<Player> AttendanceList { get; set; }
+        public ObservableCollection<Player> AttendanceList { get; private set; }
 
-        public List<Round> Rounds { get; set; }
+        [XmlIgnore]
+        public ListCollectionView AttendanceListView { get; private set; }
+
+        [XmlIgnore]
+        public ListCollectionView RankingListView { get; private set; }
+
+        public List<Round> Rounds { get; private set; }
 
         #region Name
 
@@ -79,6 +86,8 @@ namespace Tischfussball_TurnierManager.Data
         {
             Rounds = new List<Round>();
             AttendanceList = new ObservableCollection<Player>();
+            AttendanceListView = new ListCollectionView(AttendanceList);
+            RankingListView = new ListCollectionView(AttendanceList);
             AttendanceList.CollectionChanged += AttendanceList_CollectionChanged;
             maxStartNumber = 0;
             Name = Manager.GetUIString("NewTournamentName");

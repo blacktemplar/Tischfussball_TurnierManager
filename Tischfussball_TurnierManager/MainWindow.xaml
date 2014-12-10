@@ -98,7 +98,7 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="{lex:Loc TIAttendenceList}">
-                <mydg:MyDataGrid SingleType="{x:Static data:ViewType.AttendanceView}" ItemsSource="{Binding ActiveTournament.AttendanceList}" AutoGenerateColumns="True" CanUserDeleteRows="False" CanUserAddRows="True" />
+                <mydg:MyDataGrid Name="dgAttendanceList" SingleType="{x:Static data:ViewType.AttendanceView}" ItemsSource="{Binding ActiveTournament.AttendanceListView}" AutoGenerateColumns="True" CanUserDeleteRows="False" CanUserAddRows="True" />
             </TabItem>
             <TabItem Header="{lex:Loc TIDraw}" Name="TIFixtures">
                 <ListBox ItemsSource="{Binding}" HorizontalContentAlignment="Stretch" AlternationCount="2">
@@ -125,7 +125,7 @@
                 </ListBox>
             </TabItem>
             <TabItem Header="{lex:Loc TIRanking}" Name="TIRanking">
-                <mydg:MyDataGrid SingleType="{x:Static data:ViewType.RankingView}" Name="dgRanking" AutoGenerateColumns="True" ItemsSource="{Binding ActiveTournament.AttendanceList}" IsReadOnly="True" CanUserSortColumns="False" />
+                <mydg:MyDataGrid SingleType="{x:Static data:ViewType.RankingView}" Name="dgRanking" AutoGenerateColumns="True" ItemsSource="{Binding ActiveTournament.RankingListView}" IsReadOnly="True" CanUserSortColumns="False" />
             </TabItem>
         </TabControl>
     </Grid>

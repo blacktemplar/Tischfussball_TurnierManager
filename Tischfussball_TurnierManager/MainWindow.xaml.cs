@@ -137,9 +137,22 @@ namespace Tischfussball_TurnierManager
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ICollectionView dataView = CollectionViewSource.GetDefaultView(dgRanking.ItemsSource);
+            if (dataView != null && dataView is ListCollectionView)
+            {
+                ListCollectionView lColView = (ListCollectionView)dataView;
+                if (lColView.IsAddingNew)
+                {
+                    lColView.CommitNew();
+                }
+                if (lColView.IsEditingItem)
+                {
+                    lColView.CommitEdit();
+                }
+            }
+
             if (((TabControl)sender).SelectedItem == TIRanking)
             {
-                ICollectionView dataView = CollectionViewSource.GetDefaultView(dgRanking.ItemsSource);
                 dataView.SortDescriptions.Clear();
                 dataView.SortDescriptions.Add(new SortDescription("Rank", ListSortDirection.Ascending));
             }
