@@ -45,7 +45,10 @@ namespace Tischfussball_TurnierManager
                 MessageBoxResult res = MessageBox.Show("Das zuletzt geöffnete Turnier wurde nicht richtig abgespeichert, wollen Sie die letzten Änderungen wiederherstellen?", "Änderungen wiederherstellen?", MessageBoxButton.YesNo);
                 if (res == MessageBoxResult.No)
                 {
-                    man.Load();
+                    if (!man.Load())
+                    {
+                        data.ActiveTournament = null;
+                    }
                 }
             }
             this.DataContext = data;

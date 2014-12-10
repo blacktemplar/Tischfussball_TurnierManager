@@ -618,7 +618,15 @@ namespace Tischfussball_TurnierManager
         {
             try
             {
-                File.Copy(data.ActiveTournamentSavePath, tempFile, true);
+                if (String.IsNullOrEmpty(data.ActiveTournamentSavePath) || !File.Exists(data.ActiveTournamentSavePath))
+                {
+                    //forget temporary file
+                    File.Delete(tempFile);
+                }
+                else
+                {
+                    File.Copy(data.ActiveTournamentSavePath, tempFile, true);
+                }
             }
             catch
             {
