@@ -61,6 +61,7 @@ namespace Tischfussball_TurnierManager
                 return;
             }
             man.CreateNewTournament();
+            data.ActiveTournamentSavePath = null;
         }
 
         private bool? trySaveIfNeeded()
